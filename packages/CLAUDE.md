@@ -41,6 +41,25 @@ npm install
 
 To run the wired MFE setup, start **both** `marketing` (8081) and `container` (8080) — the container loads marketing's `remoteEntry.js` at startup, so the marketing dev server must be running.
 
+### Git hooks (lint + format on commit)
+
+A dependency-free `pre-commit` hook lives in `.githooks/` and is wired via
+`core.hooksPath`. On a fresh clone, enable it once:
+
+```bash
+bash scripts/setup-hooks.sh   # sets core.hooksPath=.githooks + chmods the scripts
+```
+
+On every commit it runs Prettier (`--write`) and ESLint (`--fix`) over the
+**staged files of each changed package** (using that package's local config),
+re-stages the fixes, and **aborts the commit** if ESLint reports an error it
+cannot auto-fix. Logic lives in `scripts/format-file.sh` (shared helper).
+
+A Claude Code `PostToolUse` hook (`.claude/settings.json` →
+`.claude/hooks/format-after-edit.sh`) applies the same formatting to files Claude
+edits during a session. After first creating/changing `.claude/settings.json`,
+open `/hooks` once (or restart) so Claude Code reloads it.
+
 ## Architecture
 
 ### Module Federation
