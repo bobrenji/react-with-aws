@@ -7,6 +7,9 @@ on:
       - master
     paths:
       - 'packages/container/**'
+      - '.github/workflows/container.yml'
+  workflow_dispatch:
+
 defaults:
   run:
     working-directory: ./packages/container
@@ -15,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: npm ci
       - run: npm run build
 
